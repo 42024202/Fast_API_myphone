@@ -1,7 +1,9 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from .crud import (create_product, get_product_by_id, get_products
+from .crud import (create_product, get_product_by_id, get_products,
+                   patch_product, delete_product
 )
-from .schemas.schema_v1 import ProductCreate
+from .schemas.schema_v1 import ProductCreate, ProductUpdate
+from .models import Product
 
 
 class ProductServiceV1:
@@ -15,4 +17,10 @@ class ProductServiceV1:
 
     async def create_product(self, session: AsyncSession, product_in: ProductCreate):
         return await create_product(product_in, session)
+
+    async def patch_product(self, session: AsyncSession, product_update: ProductUpdate, product: Product):
+        return await patch_product(session, product_update, product)
+
+    async def delete_product(self, session: AsyncSession, product: Product):
+        return await delete_product(session, product)
 

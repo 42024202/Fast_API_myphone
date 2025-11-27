@@ -12,13 +12,13 @@ product_service = ProductServiceV1()
 
 
 @router.get("/", response_model=list[ProductOut])
-async def get_products(session: AsyncSession = Depends(db_helper.session_dependancy)):
+async def get_products(session: AsyncSession = Depends(db_helper.scoped_session_dependancy)):
     """GET all products"""
     return await product_service.list_products(session)
 
 
 @router.get("/{id}/", response_model=ProductOut)
-async def get_product(id: int, session: AsyncSession = Depends(db_helper.session_dependancy)):
+async def get_product(id: int, session: AsyncSession = Depends(db_helper.scoped_session_dependancy)):
     """GET product by id"""
     product = await product_service.get_product(session, id)
     if not product:
@@ -29,10 +29,10 @@ async def get_product(id: int, session: AsyncSession = Depends(db_helper.session
     return product
 
 
-@router.post("/", response_model=ProductOut, status_code=status.HTTP_201_CREATED)
+@router.post("/create/", response_model=ProductOut, status_code=status.HTTP_201_CREATED)
 async def create_product(
     product_in: ProductCreate,
-    session: AsyncSession = Depends(db_helper.session_dependancy)
+    session: AsyncSession = Depends(db_helper.scoped_session_dependancy)
 ):
     """CREATE product"""
     return await product_service.create_product(session, product_in)
