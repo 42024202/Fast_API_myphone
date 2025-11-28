@@ -1,4 +1,4 @@
-from ...core.models import Base
+from app.core.models import Base
 from sqlalchemy.orm import Mapped
 
 
