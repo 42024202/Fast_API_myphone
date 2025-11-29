@@ -1,6 +1,11 @@
-from pydantic import BaseModel, EmailStr
+from fastapi_users import schemas
 
+class UserCreate(schemas.BaseUserCreate):
+    pass
 
-class CreateUser(BaseModel):
-    email: EmailStr
+class UserUpdate(schemas.BaseUserUpdate):
+    pass
+
+class UserDB(schemas.BaseUserDB):
+    pass
 
