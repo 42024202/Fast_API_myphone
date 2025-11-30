@@ -1,14 +1,15 @@
 from fastapi_users import schemas
+from app.user.models.user import UserRole
 
 
 class UserRead(schemas.BaseUser[int]):
-    pass
+    role: UserRole
 
 
 class UserCreate(schemas.BaseUserCreate):
-    pass
+    role: UserRole | None = None
 
 
 class UserUpdate(schemas.BaseUserUpdate):
-    pass
+    role: UserRole | None = None
 
