@@ -12,6 +12,9 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     async def on_after_verify(self, user: User, request=None):
         print(f"User {user.email} verified!")
 
+    async def on_after_request_verify(self, user: User, token: str, request=None):
+        print(f"Verification {token} for {user.email} has been sent!")
+
 
 async def get_user_manager(user_db=Depends(db_helper.user_db_depandancy)):
     yield UserManager(user_db)

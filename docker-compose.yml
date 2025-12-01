@@ -2,7 +2,7 @@ services:
   api:
     build: .
     container_name: fastapi_app
-    restart: always
+    restart: no
     ports:
       - "8000:8000"
     environment:

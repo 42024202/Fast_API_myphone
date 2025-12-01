@@ -18,7 +18,7 @@ class UserRole(str, enum.Enum):
     ADMIN = "ADMIN"
 
 
-class User(IdPkMixin, SQLAlchemyBaseUserTable, Base):
+class User(IdPkMixin, SQLAlchemyBaseUserTable[int], Base):
     __tablename__ = 'user'
     
     role:Mapped[UserRole] = mapped_column(

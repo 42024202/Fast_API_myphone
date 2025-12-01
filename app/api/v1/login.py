@@ -1,17 +1,17 @@
 from fastapi import APIRouter, Depends
 from fastapi_users.authentication import CookieTransport, JWTStrategy
-from fastapi_users import FastAPIUsers
 from fastapi import HTTPException
 
 from app.core.auth import get_access_strategy, get_refresh_strategy
 from app.user.user_manager import get_user_manager
+from app.user.schemas.login_credintails import LoginCredentials
 
 router = APIRouter()
 
 
-@router.post("/auth/jwt/login")
+@router.post("/login")
 async def login(
-    credentials: dict,
+    credentials: LoginCredentials,
     user_manager=Depends(get_user_manager),
     access_strategy: JWTStrategy = Depends(get_access_strategy),
     refresh_strategy: JWTStrategy = Depends(get_refresh_strategy),
@@ -25,8 +25,8 @@ async def login(
     if not user.is_verified:
         raise HTTPException(403, "Email is not verified")
 
-    access = await access_strategy.write_token({"sub": str(user.id), "aud": "access"})
-    refresh = await refresh_strategy.write_token({"sub": str(user.id), "aud": "refresh"})
+    access = await access_strategy.write_token(user)
+    refresh = await refresh_strategy.write_token(user)
 
     return {
         "access_token": access,
