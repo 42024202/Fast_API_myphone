@@ -1,19 +1,71 @@
 from pydantic import BaseModel, ConfigDict
-from .brand import BrandOut
-from .model import ModelOut
-from .storage import StorageOut
-from .color import ColorOut
+from .characters import BrandOut, ModelOut, StorageOut, CountryOfOriginOut, PhoneScreenOut, BatteryOut
+from app.phone.models.phone import Condition
+
+
+class PhoneBase(BaseModel):
+    price:int
+    brand_id:int
+    model_id:int
+    battery_id:int
+    storage_id:int
+    screen_id:int
+    oc_version:str
+    cpu:str
+    cpu_cores:int
+    cpu_frequency:int
+    gpu:str
+    ram:int
+    condition:Condition
+    release_year:int
+    is_active:bool
+    description:str
+    country_of_origin_id:int
+ 
+
+class PhoneCreate(PhoneBase):
+    pass
+
+
+class PhoneUpdate(BaseModel):
+    price:int | None = None
+    brand_id:int | None = None
+    model_id:int | None = None
+    battery_id:int | None = None
+    storage_id:int | None = None
+    screen_id:int | None = None
+    oc_version:str | None = None
+    cpu:str | None = None
+    cpu_cores:int | None = None
+    cpu_frequency:int | None = None
+    gpu:str | None = None
+    ram:int | None = None
+    condition:Condition | None = None
+    release_year:int | None = None
+    is_active:bool | None = None
+    description:str | None = None
+    country_of_origin_id:int | None = None
 
 
 class PhoneOut(BaseModel):
-    id: int
+    id:int
     price:int
     brand:BrandOut
     model:ModelOut
+    battery:BatteryOut
     storage:StorageOut
-    color:ColorOut
-    condition:str
+    screen:PhoneScreenOut
+    oc_version:str
+    cpu:str
+    cpu_cores:int
+    cpu_frequency:int
+    gpu:str
+    ram:int
+    condition:Condition
+    release_year:int
     is_active:bool
     description:str
+    country_of_origin:CountryOfOriginOut
 
     model_config = ConfigDict(from_attributes=True)
+
