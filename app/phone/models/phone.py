@@ -1,6 +1,6 @@
 from app.core import Base
 from enum import Enum as PyEnum
-from sqlalchemy import ForeignKey, Boolean, Integer, String, Text, Enum as SqlEnum
+from sqlalchemy import ForeignKey, Integer, Text, Enum as SqlEnum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.mixins import IdPkMixin, TimestampMixin, OwnerMixin
 
@@ -14,44 +14,87 @@ class Condition(PyEnum):
 class Phone(Base, IdPkMixin, TimestampMixin, OwnerMixin):
     __tablename__ = "phone"
 
-    price:Mapped[int] = mapped_column(
-            Integer,
-            nullable=False
-            )
+    price: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False
+        )
 
-    brand_id:Mapped[int] = mapped_column(
-            ForeignKey("brand.id", ondelete="CASCADE"),
-            nullable=False
-            )
+    brand_id: Mapped[int] = mapped_column(
+        ForeignKey("brand.id"),
+        nullable=False
+        )
 
-    model_id:Mapped[int] = mapped_column(
-            ForeignKey("phone_model.id", ondelete="CASCADE"),
-            nullable=False
-            )
+    model_id: Mapped[int] = mapped_column(
+        ForeignKey("phone_model.id"),
+        nullable=False
+        )
 
-    storage:Mapped[int]=mapped_column(
-            ForeignKey("storage.id", ondelete="CASCADE"),
-            nullable=False
-            )
+    battery_id: Mapped[int] = mapped_column(
+        ForeignKey("battery.id"),
+        nullable=False
+        )
 
-    color_id:Mapped[int] = mapped_column(
-            ForeignKey("color.id", ondelete="CASCADE"),
-            nullable=False
-            )
+    screen_id: Mapped[int] = mapped_column(
+        ForeignKey("phone_screen.id"),
+        nullable=False
+        )
 
-    condition:Mapped[Condition] = mapped_column(
-            SqlEnum(Condition, name="phone_condition"),
-            nullable=False
-            )
+    oc_version: Mapped[str]
+    cpu: Mapped[str]
+    cpu_cores: Mapped[int]
+    cpu_frequency: Mapped[int]
+    gpu: Mapped[str]
+    ram: Mapped[int]
 
-    is_active:Mapped[bool]
+    storage_id: Mapped[int] = mapped_column(
+        ForeignKey("storage.id"),
+        nullable=False
+        )
 
-    description:Mapped[str] = mapped_column(Text, nullable=False)
+    condition: Mapped[Condition] = mapped_column(
+        SqlEnum(Condition, name="phone_condition"),
+        nullable=False
+        )
+
+    release_year: Mapped[int]
+    is_active: Mapped[bool]
+
+    description: Mapped[str] = mapped_column(Text, nullable=False)
+
+    country_of_origin_id: Mapped[int] = mapped_column(
+        ForeignKey("country_of_origin.id"),
+        nullable=False
+        )
 
 
-    images = relationship("PhoneImage", back_populates="phone", cascade="all, delete-orphan")
-    brand = relationship("Brand")
-    model = relationship("PhoneModel")
+    #Relationship
+    images = relationship(
+        "PhoneImage",
+        back_populates="phone",
+        cascade="all, delete-orphan"
+        )
+
+    brand = relationship(
+        "Brand",
+        back_populates="phones"    
+        )
+
+    model = relationship(
+        "Model",
+        back_populates="phones"
+        )
+
+    battery = relationship(
+        "Battery",
+        back_populates="phones"
+        )
+
     storage = relationship("Storage")
-    color = relationship("Color")
+
+    screen = relationship("PhoneScreen")
+
+    country_of_origin = relationship(
+        "CountryOfOrigin",
+        back_populates="phones"
+        )
 

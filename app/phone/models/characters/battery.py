@@ -1,5 +1,5 @@
 from app.core import Base
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.mixins import IdPkMixin
 
 
@@ -14,3 +14,8 @@ class Battery(Base, IdPkMixin):
 
     charging_connector:Mapped[str]
     
+    phones = relationship(
+        "Phone",
+        back_populates="battery"
+        )
+

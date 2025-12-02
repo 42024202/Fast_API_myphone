@@ -1,7 +1,7 @@
+from __future__ import annotations
+from app.core import Base
 from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-
-from app.core import Base
 from app.mixins import IdPkMixin, TimestampMixin
 
 
@@ -14,9 +14,12 @@ class PhoneImage(Base, IdPkMixin, TimestampMixin):
             )
 
     phone_id: Mapped[int] = mapped_column(
-        ForeignKey("phone.id", ondelete="CASCADE"),
-        nullable=False
-        )
+            ForeignKey("phone.id", ondelete="CASCADE"),
+            nullable=False
+            )
 
-    phone = relationship("Phone", back_populates="images")
+    phone: Mapped["Phone"] = relationship(
+        "Phone",
+        back_populates="images"
+    )
 
