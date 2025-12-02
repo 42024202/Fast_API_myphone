@@ -2,6 +2,8 @@ import asyncio
 from logging.config import fileConfig
 from app.product.models import Product
 from app.user.models import User
+from app.phone.models import Phone, PhoneImage, Battery, Brand, CountryOfOrigin, Model, PhoneScreen, Storage
+
 
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection

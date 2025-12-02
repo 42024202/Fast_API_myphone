@@ -2,14 +2,13 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from .core.config import settings
 
-from .api.v1.product import router as product_router_v1
-from .api.v1.refresh import router as refresh_router
-from .api.v1.login import router as login_router
-from .api.v1.user import router as user_router
+from .api.v1.user import user_router, login_router, refresh_router
+from .api.v1.phone import phone_router
 
 from app.user.services import fastapi_users
 from app.user.schemas.schema_v1 import UserRead, UserCreate, UserUpdate
 from app.core.auth import auth_backend
+
 
 
 
@@ -19,10 +18,6 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
-
-
-"""PRODUCT ROUTERS"""
-app.include_router(product_router_v1, prefix=f"{settings.api_v1_prefix}")
 
 
 """USER ROUTERs"""
@@ -71,4 +66,8 @@ app.include_router(
     prefix="/users",
     tags=["users"]
     )
+
+
+"""PHONE ROUTERs"""
+app.include_router(phone_router, prefix=f"{settings.api_v1_prefix}")
 

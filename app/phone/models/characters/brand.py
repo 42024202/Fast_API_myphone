@@ -1,8 +1,9 @@
 from app.core import Base
 from sqlalchemy.orm import Mapped, mapped_column,relationship
+from app.mixins import IdPkMixin
 
 
-class Brand(Base):
+class Brand(IdPkMixin, Base):
     __tablename__ = "brand"
     name: Mapped[str] = mapped_column(
             unique=True,

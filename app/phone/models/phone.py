@@ -2,7 +2,7 @@ from app.core import Base
 from enum import Enum as PyEnum
 from sqlalchemy import ForeignKey, Integer, Text, Enum as SqlEnum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from app.mixins import IdPkMixin, TimestampMixin, OwnerMixin
+from app.mixins import IdPkMixin, TimestampMixin
 
 
 class Condition(PyEnum):
@@ -11,7 +11,7 @@ class Condition(PyEnum):
     BROKEN = "broken"
 
 
-class Phone(Base, IdPkMixin, TimestampMixin, OwnerMixin):
+class Phone(Base, IdPkMixin, TimestampMixin):
     __tablename__ = "phone"
 
     price: Mapped[int] = mapped_column(
