@@ -5,7 +5,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.mixins import IdPkMixin, TimestampMixin
 
 
-class Condition(PyEnum):
+class Condition(str, PyEnum):
     NEW = "new"
     USED = "used"
     BROKEN = "broken"

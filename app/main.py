@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from .core.config import settings
 
 from .api.v1.user import user_router, login_router, refresh_router
-from .api.v1.phone import phone_router
+from .api.v1.phone import phone_router, brand_router, model_router, screen_router, storage_router, country_router, battery_router
 
 from app.user.services import fastapi_users
 from app.user.schemas.schema_v1 import UserRead, UserCreate, UserUpdate
@@ -71,3 +71,16 @@ app.include_router(
 """PHONE ROUTERs"""
 app.include_router(phone_router, prefix=f"{settings.api_v1_prefix}")
 
+
+"""Phone characters router"""
+app.include_router(battery_router, prefix=f"{settings.api_v1_prefix}/phone")
+
+app.include_router(model_router, prefix=f"{settings.api_v1_prefix}/phone")
+
+app.include_router(screen_router, prefix=f"{settings.api_v1_prefix}/phone")
+
+app.include_router(storage_router, prefix=f"{settings.api_v1_prefix}/phone")
+
+app.include_router(brand_router, prefix=f"{settings.api_v1_prefix}/phone")
+
+app.include_router(country_router, prefix=f"{settings.api_v1_prefix}/phone")

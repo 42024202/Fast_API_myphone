@@ -1,6 +1,6 @@
-from .brand import BrandOut 
-from .model import ModelOut
-from .battery import BatteryOut
-from .storage import StorageOut
-from .country_of_origin import CountryOfOriginOut
-from .phone_screen import PhoneScreenOut
+from .brand import BrandOut, BrandUpdate, BrandCreate
+from .model import ModelOut, ModelUpdate, ModelCreate
+from .battery import BatteryOut, BatteryUpdate, BatteryCreate
+from .storage import StorageOut, StorageUpdate, StorageCreate
+from .country_of_origin import CountryOfOriginOut, CountryOfOriginUpdate, CountryOfOriginCreate
+from .phone_screen import PhoneScreenOut, PhoneScreenUpdate, PhoneScreenCreate

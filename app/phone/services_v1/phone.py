@@ -2,7 +2,7 @@ from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.phone.crud.phone_crud import PhoneCRUD
-from app.phone.schemas_v1 import PhoneCreate, PhoneUpdate
+from app.phone.schemas_v1.phone import PhoneCreate, PhoneUpdate
 from app.phone.models import Phone
 
 

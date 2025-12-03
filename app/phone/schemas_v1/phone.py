@@ -1,5 +1,10 @@
 from pydantic import BaseModel, ConfigDict
-from .characters import BrandOut, ModelOut, StorageOut, CountryOfOriginOut, PhoneScreenOut, BatteryOut
+from .characters.brand import BrandOut
+from .characters.model import ModelOut
+from .characters.storage import StorageOut
+from .characters.country_of_origin import CountryOfOriginOut
+from .characters.phone_screen import PhoneScreenOut
+from .characters.battery import BatteryOut
 from app.phone.models.phone import Condition
 
 

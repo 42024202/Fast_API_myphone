@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db_helpers import db_helper
-from app.phone.schemas_v1 import PhoneCreate, PhoneOut, PhoneUpdate
+from app.phone.schemas_v1.phone import PhoneCreate, PhoneOut, PhoneUpdate
 from app.phone.dependencies import get_phone_or_404
 
 

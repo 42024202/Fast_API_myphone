@@ -1,7 +1,7 @@
 from sqlalchemy import select, Result
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.phone.models import Phone
-from app.phone.schemas_v1 import PhoneCreate, PhoneUpdate
+from app.phone.schemas_v1.phone import PhoneCreate, PhoneUpdate
 
 
 class PhoneCRUD:
