@@ -1,7 +1,10 @@
-from sqlalchemy import select, Result
+from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.phone.models import Phone
 from app.phone.schemas_v1.phone import PhoneCreate, PhoneUpdate
+
+from app.phone.models.characters.model import Model
 
 
 class PhoneCRUD:
@@ -24,16 +27,24 @@ class PhoneCRUD:
         return await session.get(Phone, id)
     
 
-    async def get_phones(
-            self,
-            session: AsyncSession
-            ) -> list[Phone]:
-        stmnt = select(Phone).order_by(Phone.id)
-        result:Result = await session.execute(stmnt)
-        products = result.scalars().all()
+    async def get_phones(self, session: AsyncSession) -> list[Phone]:
+        stmnt = (
+            select(Phone)
+            .options(
+                selectinload(Phone.brand),
+                selectinload(Phone.model).selectinload(Model.brand),
+                selectinload(Phone.battery),
+                selectinload(Phone.storage),
+                selectinload(Phone.screen),
+                selectinload(Phone.country_of_origin),
+            )
+            .order_by(Phone.id)
+        )
 
-        return list(products)
-
+        result = await session.execute(stmnt)
+        phones = result.scalars().all()
+        
+        return list(phones)
 
     async def patch_phone(
             self,

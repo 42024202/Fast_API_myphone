@@ -1,10 +1,13 @@
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 from sqlalchemy import select, and_, or_
 
 from app.phone.crud.phone_crud import PhoneCRUD
 from app.phone.schemas_v1.phone import PhoneCreate, PhoneUpdate
 from app.phone.models import Phone
+
+from app.phone.models.characters.model import Model
 
 
 class PhoneService:
@@ -26,17 +29,26 @@ class PhoneService:
             session=session,
             phone_in=phone_in,)
 
-    async def get_or_404(
-        self,
-        session: AsyncSession,
-        phone_id: int
-    ) -> Phone:
+    async def get_or_404(self, session: AsyncSession, phone_id: int) -> Phone:
+        query = (
+            select(Phone)
+            .where(Phone.id == phone_id)
+            .options(
+                selectinload(Phone.brand),
+                selectinload(Phone.model).selectinload(Model.brand),
+                selectinload(Phone.battery),
+                selectinload(Phone.storage),
+                selectinload(Phone.screen),
+                selectinload(Phone.country_of_origin),
+            ))
 
-        phone = await session.get(Phone, phone_id)
+        result = await session.execute(query)
+        phone = result.scalar_one_or_none()
+
         if not phone:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail="Phone not found")
+                detail="Phone not found",)
 
         return phone
 
@@ -75,7 +87,18 @@ class PhoneService:
 
 
     async def filter_phones(self, session: AsyncSession, filters):
-        query = select(Phone)
+        query = (
+            select(Phone)
+            .options(
+                selectinload(Phone.brand),
+                selectinload(Phone.model).selectinload(Model.brand),
+                selectinload(Phone.battery),
+                selectinload(Phone.storage),
+                selectinload(Phone.screen),
+                selectinload(Phone.country_of_origin),
+            )
+        )
+
         conditions = []
         
         """brand"""
