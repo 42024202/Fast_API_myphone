@@ -6,6 +6,7 @@ from .characters.country_of_origin import CountryOfOriginOut
 from .characters.phone_screen import PhoneScreenOut
 from .characters.battery import BatteryOut
 from app.phone.models.phone import Condition
+from typing import Optional
 
 
 class PhoneBase(BaseModel):
@@ -73,4 +74,24 @@ class PhoneOut(BaseModel):
     country_of_origin:CountryOfOriginOut
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class PhoneFilter(BaseModel):
+    brand_id: Optional[int] = None
+    model_id: Optional[int] = None
+
+    price_from: Optional[int] = None
+    price_to: Optional[int] = None
+
+    ram_from: Optional[int] = None
+    ram_to: Optional[int] = None
+
+    storage_id: Optional[int] = None
+
+    condition: Optional[str] = None 
+
+    release_year_from: Optional[int] = None
+    release_year_to: Optional[int] = None
+
+    search: Optional[str] = None
 
