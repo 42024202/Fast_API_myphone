@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.phone.models import Phone
 from app.phone.schemas_v1.phone import PhoneCreate, PhoneUpdate
 
-from app.phone.models.characters.model import Model
+from app.phone.models import Model
 
 
 class PhoneCRUD:
@@ -16,16 +16,35 @@ class PhoneCRUD:
         phone = Phone(**phone_in.model_dump())
         session.add(phone)
         await session.commit()
-        await session.refresh(phone)
-        return phone
+        stmt = (
+            select(Phone)
+            .options(
+                selectinload(Phone.brand),
+                selectinload(Phone.model).selectinload(Model.brand),
+                selectinload(Phone.battery),
+                selectinload(Phone.storage),
+                selectinload(Phone.screen),
+                selectinload(Phone.country_of_origin),)
+            .where(Phone.id == phone.id))
+        result = await session.execute(stmt)
+        return result.scalar_one()
 
-    async def get_phone(
-            self,
-            session: AsyncSession,
-            id: int
-            ) -> Phone | None:
-        return await session.get(Phone, id)
-    
+
+
+    async def get_phone(self, session: AsyncSession, phone_id: int) -> Phone | None:
+        stmt = (
+            select(Phone)
+            .options(
+                selectinload(Phone.brand),
+                selectinload(Phone.model).selectinload(Model.brand),
+                selectinload(Phone.battery),
+                selectinload(Phone.storage),
+                selectinload(Phone.screen),
+                selectinload(Phone.country_of_origin),)
+            .where(Phone.id == phone_id))
+
+        result = await session.execute(stmt)
+        return result.scalar_one_or_none()    
 
     async def get_phones(self, session: AsyncSession) -> list[Phone]:
         stmnt = (
@@ -59,8 +78,19 @@ class PhoneCRUD:
 
         await session.commit()
         await session.refresh(phone)
+        stmt = (
+            select(Phone)
+            .options(
+                selectinload(Phone.brand),
+                selectinload(Phone.model).selectinload(Model.brand),
+                selectinload(Phone.battery),
+                selectinload(Phone.storage),
+                selectinload(Phone.screen),
+                selectinload(Phone.country_of_origin),)
+            .where(Phone.id == phone.id))
 
-        return phone
+        result = await session.execute(stmt)
+        return result.scalar_one()
 
 
     async def delete_phone(

@@ -76,6 +76,7 @@ class PhoneOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
+
 class PhoneFilter(BaseModel):
     brand_id: Optional[int] = None
     model_id: Optional[int] = None
@@ -94,4 +95,6 @@ class PhoneFilter(BaseModel):
     release_year_to: Optional[int] = None
 
     search: Optional[str] = None
+
+    model_config = ConfigDict(from_attributes=True)
 

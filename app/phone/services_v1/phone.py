@@ -7,7 +7,7 @@ from app.phone.crud.phone_crud import PhoneCRUD
 from app.phone.schemas_v1.phone import PhoneCreate, PhoneUpdate
 from app.phone.models import Phone
 
-from app.phone.models.characters.model import Model
+from app.phone.models import Model
 
 
 class PhoneService:

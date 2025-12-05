@@ -1,5 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 from sqlalchemy.engine import Result
 
 from app.phone.models import Model
@@ -17,23 +18,27 @@ class ModelCRUD:
         model = Model(**model_in.model_dump())
         session.add(model)
         await session.commit()
-        await session.refresh(model)
-        return model
+        stmt = select(Model).options(selectinload(Model.brand)).where(Model.id == model.id)
+        result = await session.execute(stmt)
+        return result.scalar_one() 
+
 
     async def get_model(
                 self,
                 session: AsyncSession,
                 model_id: int
             ) -> Model | None:
-
-        return await session.get(Model, model_id)
+        
+        stmt = select(Model).options(selectinload(Model.brand)).where(Model.id == model_id)
+        result = await session.execute(stmt)
+        return result.scalar_one_or_none()
 
     async def get_models(
                 self,
                 session: AsyncSession
             ) -> list[Model]:
 
-        stmt = select(Model).order_by(Model.id)
+        stmt = select(Model).options(selectinload(Model.brand)).order_by(Model.id)
         result: Result = await session.execute(stmt)
         models = result.scalars().all()
         return list(models)
@@ -51,9 +56,11 @@ class ModelCRUD:
             setattr(model, name, value)
 
         await session.commit()
-        await session.refresh(model)
-        return model
+        stmt = select(Model).options(selectinload(Model.brand)).where(Model.id == model.id)
+        result: Result = await session.execute(stmt)
+        return result.scalar_one()
 
+        
     async def delete_model(
                 self,
                 session: AsyncSession,

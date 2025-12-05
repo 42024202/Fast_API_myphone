@@ -15,6 +15,7 @@ class CountryOfOriginUpdate(CountryOfOriginBase):
 
 class CountryOfOriginOut(CountryOfOriginBase):
     id: int
-    
+
     model_config = ConfigDict(from_attributes=True)
+    
 

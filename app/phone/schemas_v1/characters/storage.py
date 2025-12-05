@@ -18,3 +18,4 @@ class StorageOut(StorageBase):
 
     model_config = ConfigDict(from_attributes=True)
 
+

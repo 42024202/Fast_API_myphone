@@ -11,9 +11,10 @@ class BrandCreate(BrandBase):
 
 
 class BrandOut(BrandBase):
-    model_config = ConfigDict(from_attributes=True)
     """Schema for brand"""
     id: int
+
+    model_config = ConfigDict(from_attributes=True)
 
 class BrandUpdate(BaseModel):
     """Schema for updating brand"""

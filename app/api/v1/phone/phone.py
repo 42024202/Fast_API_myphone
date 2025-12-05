@@ -11,8 +11,8 @@ from app.phone.dependencies import get_phone_or_404
 router = APIRouter(prefix="/phone", tags=["phone"])
 
 
-@router.get("/", response_model=list[PhoneOut])
-async def list_phones(
+@router.get("/all/", response_model=list[PhoneOut])
+async def list_all_phones(
     session: AsyncSession = Depends(db_helper.scoped_session_dependancy)):
 
     """Get all phones"""

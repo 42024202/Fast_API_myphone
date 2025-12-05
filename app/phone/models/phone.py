@@ -85,13 +85,19 @@ class Phone(Base, IdPkMixin, TimestampMixin):
         )
 
     battery = relationship(
-        "Battery",
-        back_populates="phones"
-        )
+            "Battery",
+            back_populates="phones"
+            )
 
-    storage = relationship("Storage")
+    storage = relationship(
+            "Storage",
+            back_populates="phones"
+            )
 
-    screen = relationship("PhoneScreen")
+    screen = relationship(
+            "PhoneScreen",
+            back_populates="phones"
+            )
 
     country_of_origin = relationship(
         "CountryOfOrigin",
